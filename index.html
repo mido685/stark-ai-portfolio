@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STARK AI - Intelligent Systems & AI Engineering</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/gif" href="logo.gif">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <img src="logo.gif" alt="STARK AI Logo" class="logo-img">
+                <span class="logo-text">STARK AI</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="#hero" class="nav-link">Home</a></li>
+                <li><a href="#about" class="nav-link">About</a></li>
+                <li><a href="#projects" class="nav-link">Projects</a></li>
+                <li><a href="#technologies" class="nav-link">Technologies</a></li>
+                <li><a href="#architecture" class="nav-link">Architecture</a></li>
+                <li><a href="#testimonials" class="nav-link">Testimonials</a></li>
+                <li><a href="#blog" class="nav-link">Blog</a></li>
+                <li><a href="#contact" class="nav-link">Contact</a></li>
+                <li><a href="#" class="nav-link dashboard-toggle" id="dashboardToggle">Dashboard</a></li>
+            </ul>
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Dashboard Panel -->
+    <div class="dashboard-panel" id="dashboardPanel">
+        <div class="dashboard-header">
+            <h2>Dashboard</h2>
+            <button class="close-dashboard" id="closeDashboard">&times;</button>
+        </div>
+
+        <div class="dashboard-content">
+            <!-- Tab Navigation -->
+            <div class="dashboard-tabs">
+                <button class="tab-btn active" data-tab="projects-tab">Manage Projects</button>
+                <button class="tab-btn" data-tab="sections-tab">Edit Sections</button>
+                <button class="tab-btn" data-tab="settings-tab">Settings</button>
+            </div>
+
+            <!-- Projects Tab -->
+            <div id="projects-tab" class="tab-content active">
+                <div class="dashboard-section">
+                    <h3>Add New Project</h3>
+                    <form id="addProjectForm" class="project-form">
+                        <input type="text" id="projectTitle" placeholder="Project Title" required>
+                        <textarea id="projectDescription" placeholder="Project Description" required></textarea>
+                        <input type="text" id="projectTech" placeholder="Technologies (comma-separated)" required>
+                        <input type="url" id="projectGithub" placeholder="GitHub URL">
+                        <input type="url" id="projectDemo" placeholder="Live Demo URL">
+                        <button type="submit" class="btn-primary">Add Project</button>
+                    </form>
+                </div>
+
+                <div class="dashboard-section">
+                    <h3>Existing Projects</h3>
+                    <div id="projectsList" class="projects-list"></div>
+                </div>
+            </div>
+
+            <!-- Sections Tab -->
+            <div id="sections-tab" class="tab-content">
+                <div class="dashboard-section">
+                    <h3>Edit About Section</h3>
+                    <textarea id="aboutText" placeholder="About section text" class="edit-textarea"></textarea>
+                    <button class="btn-primary" onclick="saveAboutSection()">Save About</button>
+                </div>
+
+                <div class="dashboard-section">
+                    <h3>Edit Contact Information</h3>
+                    <input type="email" id="contactEmail" placeholder="Email" class="edit-input">
+                    <input type="url" id="contactGithub" placeholder="GitHub URL" class="edit-input">
+                    <input type="url" id="contactLinkedin" placeholder="LinkedIn URL" class="edit-input">
+                    <button class="btn-primary" onclick="saveContactInfo()">Save Contact</button>
+                </div>
+            </div>
+
+            <!-- Settings Tab -->
+            <div id="settings-tab" class="tab-content">
+                <div class="dashboard-section">
+                    <h3>Data Management</h3>
+                    <button class="btn-secondary" onclick="exportData()">Export Data (JSON)</button>
+                    <button class="btn-secondary" onclick="importDataPrompt()">Import Data (JSON)</button>
+                    <button class="btn-danger" onclick="resetToDefault()">Reset to Default</button>
+                </div>
+
+                <div class="dashboard-section">
+                    <h3>Website Settings</h3>
+                    <label>
+                        <input type="checkbox" id="darkMode" checked> Dark Mode
+                    </label>
+                    <label>
+                        <input type="checkbox" id="animationsEnabled" checked> Enable Animations
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dashboard Overlay -->
+    <div class="dashboard-overlay" id="dashboardOverlay"></div>
+
+    <!-- Hero Section -->
+    <section id="hero" class="hero">
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1 class="hero-title">STARK AI</h1>
+                <p class="hero-subtitle">Building Intelligent AI Systems for the Future</p>
+                <p class="hero-description">
+                    We develop cutting-edge AI assistants, advanced NLP systems, and intelligent automation solutions 
+                    that transform businesses and enhance human capabilities through artificial intelligence.
+                </p>
+                <div class="hero-buttons">
+                    <a href="#projects" class="btn btn-primary">View Projects</a>
+                    <a href="#contact" class="btn btn-secondary">Contact Us</a>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="ai-sphere"></div>
+                <div class="ai-particles"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about">
+        <div class="container">
+            <h2 class="section-title">About STARK AI</h2>
+            <div class="about-content">
+                <div class="about-text">
+                    <p id="aboutContent">
+                        STARK AI specializes in developing intelligent systems that leverage the power of artificial intelligence 
+                        and machine learning. Our expertise spans across multiple domains including Natural Language Processing, 
+                        AI-powered assistants, and automation systems. We are committed to building solutions that are not only 
+                        technologically advanced but also practical and scalable for real-world applications.
+                    </p>
+                    <div class="about-founder">
+                        <h3>About the Founder</h3>
+                        <p>
+                            An AI Engineer with deep expertise in Natural Language Processing, intelligent systems design, and 
+                            AI-powered assistant development. Passionate about creating innovative solutions that bridge the gap 
+                            between cutting-edge AI research and practical business applications.
+                        </p>
+                    </div>
+                </div>
+                <div class="about-features">
+                    <div class="feature-card">
+                        <div class="feature-icon">🤖</div>
+                        <h3>Artificial Intelligence</h3>
+                        <p>Advanced AI models and algorithms</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">💬</div>
+                        <h3>Natural Language Processing</h3>
+                        <p>Understanding and processing human language</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🔧</div>
+                        <h3>AI Assistants</h3>
+                        <p>Intelligent conversational systems</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">⚙️</div>
+                        <h3>Automation Systems</h3>
+                        <p>Smart workflow automation</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📊</div>
+                        <h3>Machine Learning</h3>
+                        <p>Data-driven intelligent solutions</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🧠</div>
+                        <h3>Deep Learning</h3>
+                        <p>Neural networks and transformers</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="projects">
+        <div class="container">
+            <h2 class="section-title">Featured Projects</h2>
+            <div id="projectsContainer" class="projects-grid">
+                <!-- Projects will be dynamically loaded here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Technologies Section -->
+    <section id="technologies" class="technologies">
+        <div class="container">
+            <h2 class="section-title">Technologies & Tools</h2>
+            <div class="tech-grid">
+                <div class="tech-card">
+                    <div class="tech-icon">🐍</div>
+                    <h3>Python</h3>
+                </div>
+                <div class="tech-card">
+                    <div class="tech-icon">🤖</div>
+                    <h3>Machine Learning</h3>
+                </div>
+                <div class="tech-card">
+                    <div class="tech-icon">💬</div>
+                    <h3>NLP</h3>
+                </div>
+                <div class="tech-card">
+                    <div class="tech-icon">⚡</div>
+                    <h3>FastAPI</h3>
+                </div>
+                <div class="tech-card">
+                    <div class="tech-icon">🔄</div>
+                    <h3>Transformers</h3>
+                </div>
+                <div class="tech-card">
+                    <div class="tech-icon">🧠</div>
+                    <h3>Neural Networks</h3>
+                </div>
+                <div class="tech-card">
+                    <div class="tech-icon">🔌</div>
+                    <h3>APIs</h3>
+                </div>
+                <div class="tech-card">
+                    <div class="tech-icon">💾</div>
+                    <h3>Databases</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Architecture Section -->
+    <section id="architecture" class="architecture">
+        <div class="container">
+            <h2 class="section-title">AI System Architecture</h2>
+            <div class="architecture-diagram">
+                <div class="arch-box">User</div>
+                <div class="arch-arrow">→</div>
+                <div class="arch-box">Web Interface</div>
+                <div class="arch-arrow">→</div>
+                <div class="arch-box">FastAPI Backend</div>
+                <div class="arch-arrow">→</div>
+                <div class="arch-box">NLP Model</div>
+                <div class="arch-arrow">→</div>
+                <div class="arch-box">Database</div>
+                <div class="arch-arrow">→</div>
+                <div class="arch-box">Notification System</div>
+            </div>
+            <p class="architecture-description">
+                Our architecture is designed for scalability, reliability, and performance. Each component is optimized 
+                to handle complex AI operations while maintaining low latency and high throughput.
+            </p>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <div class="container">
+            <h2 class="section-title">Get In Touch</h2>
+            <div class="contact-content">
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <h3>Email</h3>
+                        <p><a href="mailto:contact@stark-ai.com" id="contactEmailLink">contact@stark-ai.com</a></p>
+                    </div>
+                    <div class="contact-item">
+                        <h3>GitHub</h3>
+                        <p><a href="https://github.com" id="contactGithubLink" target="_blank">github.com/stark-ai</a></p>
+                    </div>
+                    <div class="contact-item">
+                        <h3>LinkedIn</h3>
+                        <p><a href="https://linkedin.com" id="contactLinkedinLink" target="_blank">linkedin.com/company/stark-ai</a></p>
+                    </div>
+                </div>
+                <form id="contactForm" class="contact-form">
+                    <input type="text" placeholder="Your Name" required>
+                    <input type="email" placeholder="Your Email" required>
+                    <textarea placeholder="Your Message" rows="5" required></textarea>
+                    <button type="submit" class="btn btn-primary">Send Message</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section id="testimonials" class="testimonials">
+        <div class="container">
+            <h2 class="section-title">What Our Clients Say</h2>
+            <div id="testimonialsContainer" class="testimonials-grid">
+                <!-- Testimonials will be loaded here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Blog Section -->
+    <section id="blog" class="blog">
+        <div class="container">
+            <h2 class="section-title">Latest Articles</h2>
+            <div class="blog-controls">
+                <input type="text" id="blogSearch" placeholder="Search articles..." class="blog-search">
+                <select id="blogCategory" class="blog-filter">
+                    <option value="">All Categories</option>
+                    <option value="AI">AI</option>
+                    <option value="NLP">NLP</option>
+                    <option value="Tutorial">Tutorial</option>
+                    <option value="News">News</option>
+                </select>
+            </div>
+            <div id="blogContainer" class="blog-grid">
+                <!-- Blog posts will be loaded here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter Section -->
+    <section id="newsletter" class="newsletter">
+        <div class="container">
+            <div class="newsletter-content">
+                <h2>Stay Updated with STARK AI</h2>
+                <p>Get the latest insights on AI, NLP, and intelligent systems delivered to your inbox.</p>
+                <form id="newsletterForm" class="newsletter-form">
+                    <input type="email" placeholder="Enter your email" required>
+                    <button type="submit" class="btn btn-primary">Subscribe</button>
+                </form>
+                <p class="newsletter-note">We respect your privacy. Unsubscribe at any time.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-XXXXXXXXXX');
+    </script>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 STARK AI – Intelligent Systems & AI Engineering. All rights reserved.</p>
+            <div class="footer-links">
+                <a href="#hero">Home</a>
+                <a href="#about">About</a>
+                <a href="#projects">Projects</a>
+                <a href="#contact">Contact</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="script.js"></script>
+</body>
+</html>
