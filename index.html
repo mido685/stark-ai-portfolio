@@ -3,9 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>STARK AI - Intelligent Systems & AI Engineering</title>
+    <meta name="description" content="STARK AI - Building intelligent AI systems, NLP solutions and automation by Mohamed Ibrahim">
+    <meta name="keywords" content="AI, NLP, Machine Learning, FastAPI, Python, STARK AI, Mohamed Ibrahim">
+    <meta name="author" content="Mohamed Ibrahim">
+    <title>STARK AI | Intelligent AI Systems & NLP Solutions</title>
+    <meta property="og:title" content="STARK AI | Intelligent AI Systems">
+    <meta property="og:description" content="Building cutting-edge AI assistants, NLP systems and automation solutions.">
+    <meta property="og:image" content="logo.gif">
+    <meta property="og:url" content="https://mido685.github.io/stark-ai-portfolio">
+    <meta property="og:type" content="website">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.5.0/css/all.css">
     <link rel="stylesheet" href="style.css">
     <link rel="icon" type="image/gif" href="logo.gif">
+    <!-- MailerLite Universal -->
+    <script>
+    (function(w,d,e,u,f,l,n){w[f]=w[f]||function(){(w[f].q=w[f].q||[])
+    .push(arguments);},l=d.createElement(e),l.async=1,l.src=u,
+    n=d.getElementsByTagName(e)[0],n.parentNode.insertBefore(l,n);})
+    (window,document,'script','https://assets.mailerlite.com/js/universal.js','ml');
+    ml('account', '2194564');
+</script>
+<!-- End MailerLite Universal -->
 </head>
 <body>
     <!-- Navigation Bar -->
@@ -82,7 +100,7 @@
                     <input type="email" id="contactEmail" placeholder="Email" class="edit-input">
                     <input type="url" id="contactGithub" placeholder="GitHub URL" class="edit-input">
                     <input type="url" id="contactLinkedin" placeholder="LinkedIn URL" class="edit-input">
-                    <button class="btn-primary" onclick="saveContactInfo()">Save Contact</button>
+                    <button class="btn-primary" onclick="saveContactInfoFunc()">Save Contact</button>
                 </div>
             </div>
 
@@ -112,27 +130,42 @@
     <div class="dashboard-overlay" id="dashboardOverlay"></div>
 
     <!-- Hero Section -->
-    <section id="hero" class="hero">
-        <div class="hero-content">
-            <div class="hero-text">
-                <h1 class="hero-title">STARK AI</h1>
-                <p class="hero-subtitle">Building Intelligent AI Systems for the Future</p>
-                <p class="hero-description">
-                    We develop cutting-edge AI assistants, advanced NLP systems, and intelligent automation solutions 
-                    that transform businesses and enhance human capabilities through artificial intelligence.
-                </p>
-                <div class="hero-buttons">
-                    <a href="#projects" class="btn btn-primary">View Projects</a>
-                    <a href="#contact" class="btn btn-secondary">Contact Us</a>
-                </div>
-            </div>
-            <div class="hero-visual">
-                <div class="ai-sphere"></div>
-                <div class="ai-particles"></div>
+     <section id="hero" class="hero">
+    <div class="hero-content">
+        <div class="hero-text">
+            <h1 class="hero-title">STARK AI</h1>
+            <p class="hero-subtitle">Building Intelligent AI Systems for the Future</p>
+            <p class="hero-description">
+                We develop cutting-edge AI assistants, advanced NLP systems, and intelligent automation solutions 
+                that transform businesses and enhance human capabilities through artificial intelligence.
+            </p>
+            <div class="hero-buttons">
+                <a href="#projects" class="btn btn-primary">View Projects</a>
+                <a href="#contact" class="btn btn-secondary">Contact Us</a>
+                <a href="Mohamed_Ibrahim_CV.pdf" download class="btn btn-secondary">
+                    <i class="fas fa-download" style="margin-right: 8px;"></i>Download CV
+                </a>
             </div>
         </div>
-    </section>
-
+        <div class="hero-visual">
+            <div class="ai-sphere">
+                <img src="logo.gif" alt="STARK AI Logo" style="
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    border-radius: 50%;
+                    mix-blend-mode: screen;
+                    clip-path: circle(50%);
+                ">
+            </div>
+            <div class="ai-particles"></div>
+        </div>
+    </div>
+</section>  
     <!-- About Section -->
     <section id="about" class="about">
         <div class="container">
@@ -147,10 +180,11 @@
                     </p>
                     <div class="about-founder">
                         <h3>About the Founder</h3>
-                        <p>
-                            An AI Engineer with deep expertise in Natural Language Processing, intelligent systems design, and 
-                            AI-powered assistant development. Passionate about creating innovative solutions that bridge the gap 
-                            between cutting-edge AI research and practical business applications.
+                         <p>
+                            <strong style="color: var(--accent-color);">Mohamed Ibrahim</strong> — AI Engineer specializing in 
+                            Natural Language Processing, intelligent systems design, and AI-powered assistant development. 
+                            Passionate about creating innovative solutions that bridge the gap between cutting-edge AI research 
+                            and practical business applications.
                         </p>
                     </div>
                 </div>
@@ -272,22 +306,26 @@
             <div class="contact-content">
                 <div class="contact-info">
                     <div class="contact-item">
-                        <h3>Email</h3>
+                        <h3><i class="fas fa-envelope" style="color: var(--accent-color); margin-right: 10px;"></i>Email</h3>
                         <p><a href="mailto:contact@stark-ai.com" id="contactEmailLink">contact@stark-ai.com</a></p>
                     </div>
                     <div class="contact-item">
-                        <h3>GitHub</h3>
+                        <h3><i class="fab fa-github" style="color: var(--accent-color); margin-right: 10px;"></i>GitHub</h3>
                         <p><a href="https://github.com" id="contactGithubLink" target="_blank">github.com/stark-ai</a></p>
                     </div>
                     <div class="contact-item">
-                        <h3>LinkedIn</h3>
+                        <h3><i class="fab fa-linkedin" style="color: var(--accent-color); margin-right: 10px;"></i>LinkedIn</h3>
                         <p><a href="https://linkedin.com" id="contactLinkedinLink" target="_blank">linkedin.com/company/stark-ai</a></p>
+                    </div>
+                    <div class="contact-item">
+                        <h3><i class="fab fa-whatsapp" style="color: #00ff88; margin-right: 10px;"></i>WhatsApp</h3>
+                        <p><a href="https://wa.me/201121079983" id="contactWhatsappLink" target="_blank">Chat on WhatsApp</a></p>
                     </div>
                 </div>
                 <form id="contactForm" class="contact-form">
-                    <input type="text" placeholder="Your Name" required>
-                    <input type="email" placeholder="Your Email" required>
-                    <textarea placeholder="Your Message" rows="5" required></textarea>
+                    <input type="text" name="name" placeholder="Your Name" required>
+                    <input type="email" name="email" placeholder="Your Email" required>
+                    <textarea name="message" placeholder="Your Message" rows="5" required></textarea>
                     <button type="submit" class="btn btn-primary">Send Message</button>
                 </form>
             </div>
@@ -325,26 +363,22 @@
     </section>
 
     <!-- Newsletter Section -->
-    <section id="newsletter" class="newsletter">
-        <div class="container">
-            <div class="newsletter-content">
-                <h2>Stay Updated with STARK AI</h2>
-                <p>Get the latest insights on AI, NLP, and intelligent systems delivered to your inbox.</p>
-                <form id="newsletterForm" class="newsletter-form">
-                    <input type="email" placeholder="Enter your email" required>
-                    <button type="submit" class="btn btn-primary">Subscribe</button>
-                </form>
-                <p class="newsletter-note">We respect your privacy. Unsubscribe at any time.</p>
-            </div>
+     <section id="newsletter" class="newsletter">
+    <div class="container">
+        <div class="newsletter-content">
+            <h2>Stay Updated with STARK AI</h2>
+            <p>Get the latest insights on AI, NLP, and intelligent systems delivered to your inbox.</p>
+            <div class="ml-embedded" data-form="kl25x9"></div>
+            <p class="newsletter-note">We respect your privacy. Unsubscribe at any time.</p>
         </div>
-    </section>
-
+    </div>
+</section>
     <!-- Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
+        gtag('js', new Date()); 
         gtag('config', 'G-XXXXXXXXXX');
     </script>
 
@@ -352,16 +386,26 @@
     <footer class="footer">
         <div class="container">
             <p>&copy; 2026 STARK AI – Intelligent Systems & AI Engineering. All rights reserved.</p>
+            <div class="footer-social">
+                <a href="https://github.com/mido685" target="_blank"><i class="fab fa-github"></i></a>
+                <a href="https://www.linkedin.com/in/mohamed-ibrahim-967831187" target="_blank"><i class="fab fa-linkedin"></i></a>
+                <a href="https://wa.me/201121079983" target="_blank"><i class="fab fa-whatsapp"></i></a>
+                <a href="mailto:midokhodairy011181@gmail.com"><i class="fas fa-envelope"></i></a>
+                <a href="https://www.instagram.com/stark_ai1/" target="_blank"><i class="fab fa-instagram"></i></a>
+                <a href="https://www.facebook.com/people/Stark-Excel-Power-BI-AI-Solutions/61583014826632/" target="_blank"><i class="fab fa-facebook"></i></a>
+            </div>
             <div class="footer-links">
-                <a href="#hero">Home</a>
-                <a href="#about">About</a>
-                <a href="#projects">Projects</a>
-                <a href="#contact">Contact</a>
+                    <a href="#hero">Home</a>
+                    <a href="#about">About</a>
+                    <a href="#projects">Projects</a>
+                    <a href="#blog">Blog</a>
+                    <a href="#contact">Contact</a>
             </div>
         </div>
-    </footer>
 
-    <!-- Scripts -->
+    </footer>
+       <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
