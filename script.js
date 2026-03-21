@@ -124,7 +124,7 @@ function renderProjects() {
             <div class="project-tech">${project.technologies.map(t => `<span class="tech-badge">${t}</span>`).join('')}</div>
             <div class="project-links">
                 ${project.github ? `<a href="${project.github}" target="_blank">GitHub</a>` : ''}
-                ${project.demo ? `<a href="${project.demo}" target="_blank">Live Demo</a>` : ''}
+                ${project.demo ? `<a href="${project.demo}" target="_blank" class="btn-demo">Live Demo →</a>` : ''}
             </div>`;
         container.appendChild(card);
     });
