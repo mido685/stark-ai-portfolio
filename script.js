@@ -34,7 +34,7 @@ const DEFAULT_PROJECTS = [
 ];
 
 const DEFAULT_CONTACT = {
-    email: 'midokhodairy011181@gmail.com',
+    email: 'mohamedstark874@gmail.com',
     github: 'https://github.com/mido685',
     linkedin: 'https://www.linkedin.com/in/mohamed-ibrahim-967831187'
 };
