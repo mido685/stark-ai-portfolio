@@ -64,10 +64,14 @@ const DEFAULT_BLOG_POSTS = [
     { id: 6, title: "NLP for Sentiment Analysis", excerpt: "Learn how to analyze customer sentiment using advanced NLP techniques.", category: "NLP", date: "February 25, 2026", emoji: "😊" }
 ];
 
+// REPLACE ✅
 function initializeStorage() {
-    if (!localStorage.getItem('starkProjects')) localStorage.setItem('starkProjects', JSON.stringify(DEFAULT_PROJECTS));
-    if (!localStorage.getItem('starkContact')) localStorage.setItem('starkContact', JSON.stringify(DEFAULT_CONTACT));
-    if (!localStorage.getItem('starkAbout')) localStorage.setItem('starkAbout', DEFAULT_ABOUT);
+    if (!localStorage.getItem('starkProjects'))
+        localStorage.setItem('starkProjects', JSON.stringify(DEFAULT_PROJECTS));
+
+    // always overwrite — so git push updates everyone
+    localStorage.setItem('starkContact', JSON.stringify(DEFAULT_CONTACT));
+    localStorage.setItem('starkAbout', DEFAULT_ABOUT);
 }
 
 function getProjects() { return JSON.parse(localStorage.getItem('starkProjects')) || DEFAULT_PROJECTS; }
@@ -284,6 +288,7 @@ function exportData() {
 }
 
 function importDataPrompt() {
+    alert('⚠️ Import only updates THIS device.\nTo update for everyone → edit script.js and git push.');
     const input = document.createElement('input');
     input.type = 'file';
     input.accept = 'application/json,.json';
