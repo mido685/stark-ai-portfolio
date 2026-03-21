@@ -24,12 +24,19 @@ const DEFAULT_PROJECTS = [
         demo: ''
     },
     {
-        id: 3,
-        title: 'Custom NLP Pipeline',
-        description: 'End-to-end NLP pipeline featuring custom tokenizer, Named Entity Recognition training, and advanced data preprocessing capabilities.',
-        technologies: ['Python', 'spaCy', 'NLTK', 'scikit-learn', 'PyTorch'],
-        github: 'https://github.com/mido685/nlp-pipeline',
-        demo: ''
+      "id": 3,
+      "title": "Stark Medical Tokenizer",
+      "description": "A WordPiece tokenizer built from scratch for medical NLP — same algorithm used in BERT and BioBERT. Features a HuggingFace-compatible API, medical text preprocessing pipeline covering 28 clinical domains, subword vocabulary learning, and a live demo powered by FastAPI deployed on HuggingFace Spaces.",
+      "technologies": [
+        "Python",
+        "FastAPI",
+        "WordPiece Algorithm",
+        "Medical NLP",
+        "HuggingFace Spaces",
+        "PyTorch"
+      ],
+      "github": "https://github.com/mido685/stark_tokenizer",
+      "demo": "https://mido685.github.io/stark_tokenizer/"
     }
 ];
 
