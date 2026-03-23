@@ -8,23 +8,7 @@
 
 const DEFAULT_PROJECTS = [
     {
-        id: 1,
-        title: 'STARK Medical Assistant',
-        description: 'AI system that extracts medication information using Named Entity Recognition (NER). Schedules reminders and sends Telegram notifications for medication adherence.',
-        technologies: ['Python', 'FastAPI', 'NLP', 'Transformers', 'Telegram API'],
-        github: 'https://github.com/mido685/medical-assistant',
-        demo: ''
-    },
-    {
-        id: 2,
-        title: 'AI Equipment Chatbot',
-        description: 'NLP chatbot that answers equipment-related questions using sentence embeddings and intent classification. Supports natural language queries with high accuracy.',
-        technologies: ['Python', 'FastAPI', 'Sentence Transformers', 'Intent Classification', 'PostgreSQL'],
-        github: 'https://github.com/mido685/equipment-chatbot',
-        demo: ''
-    },
-    {
-      "id": 3,
+      "id": 1,
       "title": "Stark Medical Tokenizer",
       "description": "A WordPiece tokenizer built from scratch for medical NLP — same algorithm used in BERT and BioBERT. Features a HuggingFace-compatible API, medical text preprocessing pipeline covering 28 clinical domains, subword vocabulary learning, and a live demo powered by FastAPI deployed on HuggingFace Spaces.",
       "technologies": [
@@ -39,7 +23,7 @@ const DEFAULT_PROJECTS = [
       "demo": "https://mido685.github.io/stark_tokenizer/"
     },
     {
-    "id": 4,
+    "id": 2,
     "title": "Stark Medical Assistance Reminder",
     "description": "A production-ready AI-powered medication tracker built with a fine-tuned BERT model for medical Named Entity Recognition (NER). Extracts drug names, doses, frequencies, and times from natural language input. Features a FastAPI backend with PostgreSQL database, scheduled Telegram reminders, rate limiting, and a chat UI. Model trained on 28 clinical domains and deployed on HuggingFace Spaces.",
     "technologies": [
