@@ -37,6 +37,25 @@ const DEFAULT_PROJECTS = [
       ],
       "github": "https://github.com/mido685/stark_tokenizer",
       "demo": "https://mido685.github.io/stark_tokenizer/"
+    },
+    {
+    "id": 4,
+    "title": "Stark Medical Assistance Reminder",
+    "description": "A production-ready AI-powered medication tracker built with a fine-tuned BERT model for medical Named Entity Recognition (NER). Extracts drug names, doses, frequencies, and times from natural language input. Features a FastAPI backend with PostgreSQL database, scheduled Telegram reminders, rate limiting, and a chat UI. Model trained on 28 clinical domains and deployed on HuggingFace Spaces.",
+    "technologies": [
+        "Python",
+        "FastAPI",
+        "BERT",
+        "Medical NER",
+        "HuggingFace Spaces",
+        "PyTorch",
+        "PostgreSQL",
+        "Supabase",
+        "Telegram Bot API",
+        "Docker"
+    ],
+    "github": "https://github.com/mido685/medical_assistance",
+    "demo": "https://mido685.github.io/medical_assistance/"
     }
 ];
 
