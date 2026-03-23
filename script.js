@@ -69,10 +69,8 @@ const DEFAULT_BLOG_POSTS = [
 
 // REPLACE ✅
 function initializeStorage() {
-    if (!localStorage.getItem('starkProjects'))
-        localStorage.setItem('starkProjects', JSON.stringify(DEFAULT_PROJECTS));
-
-    // always overwrite — so git push updates everyone
+    // always overwrite everything — so git push updates everyone
+    localStorage.setItem('starkProjects', JSON.stringify(DEFAULT_PROJECTS));
     localStorage.setItem('starkContact', JSON.stringify(DEFAULT_CONTACT));
     localStorage.setItem('starkAbout', DEFAULT_ABOUT);
 }
