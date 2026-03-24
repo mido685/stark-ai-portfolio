@@ -20,7 +20,9 @@ const DEFAULT_PROJECTS = [
         "PyTorch"
       ],
       "github": "https://github.com/mido685/stark_tokenizer",
-      "demo": "https://mido685.github.io/stark_tokenizer/"
+      "demo": "https://mido685.github.io/stark_tokenizer/",
+      "image":"tokenizer.png",
+      "stars": 5
     },
     {
     "id": 2,
@@ -39,7 +41,9 @@ const DEFAULT_PROJECTS = [
         "Docker"
     ],
     "github": "https://github.com/mido685/medical_assistance",
-    "demo": "https://mido685.github.io/medical_assistance/"
+    "demo": "https://mido685.github.io/medical_assistance/",
+    "image":"medical_assistance.png",
+    "stars": 5
     }
 ];
 
@@ -117,15 +121,27 @@ function renderProjects() {
     const projects = getProjects();
     container.innerHTML = '';
     projects.forEach(project => {
+        const stars = project.stars || 0;
+        const starsHTML = Array.from({length: 5}, (_, i) =>
+            `<span class="star ${i < stars ? 'filled' : ''}"">★</span>`
+        ).join('');
+
         const card = document.createElement('div');
         card.className = 'project-card';
         card.innerHTML = `
-            <h3 class="project-title">${project.title}</h3>
-            <p class="project-description">${project.description}</p>
-            <div class="project-tech">${project.technologies.map(t => `<span class="tech-badge">${t}</span>`).join('')}</div>
-            <div class="project-links">
-                ${project.github ? `<a href="${project.github}" target="_blank">GitHub</a>` : ''}
-                ${project.demo ? `<a href="${project.demo}" target="_blank" class="btn-demo">Live Demo →</a>` : ''}
+            ${project.image
+                ? `<div class="project-image"><img src="${project.image}" alt="${project.title}" onerror="this.parentElement.style.display='none'"></div>`
+                : `<div class="project-image project-image-placeholder"><span>🤖</span></div>`
+            }
+            <div class="project-body">
+                <div class="project-stars">${starsHTML}</div>
+                <h3 class="project-title">${project.title}</h3>
+                <p class="project-description">${project.description}</p>
+                <div class="project-tech">${project.technologies.map(t => `<span class="tech-badge">${t}</span>`).join('')}</div>
+                <div class="project-links">
+                    ${project.github ? `<a href="${project.github}" target="_blank">GitHub</a>` : ''}
+                    ${project.demo ? `<a href="${project.demo}" target="_blank" class="btn-demo">Live Demo →</a>` : ''}
+                </div>
             </div>`;
         container.appendChild(card);
     });
@@ -448,13 +464,15 @@ document.addEventListener('DOMContentLoaded', () => {
     if (addProjectForm) {
         addProjectForm.addEventListener('submit', (e) => {
             e.preventDefault();
+            const image = document.getElementById('projectImage').value.trim();
+            const stars = parseInt(document.getElementById('projectStars').value) || 0;
+            const newProject = { id: Date.now(), title, description, technologies: tech ? tech.split(',').map(t => t.trim()) : [], github, demo, image, stars };
             const title = document.getElementById('projectTitle').value.trim();
             const description = document.getElementById('projectDescription').value.trim();
             const tech = document.getElementById('projectTech').value.trim();
             const github = document.getElementById('projectGithub').value.trim();
             const demo = document.getElementById('projectDemo').value.trim();
             if (!title || !description) { showNotification('Title and description are required!', 'error'); return; }
-            const newProject = { id: Date.now(), title, description, technologies: tech ? tech.split(',').map(t => t.trim()) : [], github, demo };
             const projects = getProjects();
             projects.push(newProject);
             saveProjects(projects);
