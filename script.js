@@ -50,7 +50,9 @@ const DEFAULT_TESTIMONIALS = [
     { id:1, text:"STARK AI transformed our customer support system with their intelligent chatbot. The accuracy and speed are impressive.", author:"Sarah Johnson",  position:"CEO, TechCorp",              rating:5, avatar:"SJ" },
     { id:2, text:"The NLP solutions provided by STARK AI have significantly improved our data processing capabilities.",               author:"Michael Chen",   position:"CTO, DataFlow Inc",           rating:5, avatar:"MC" },
     { id:3, text:"Professional, innovative, and results-driven. STARK AI exceeded our expectations on every project.",                author:"Emma Williams",  position:"Product Manager, AI Solutions",rating:5, avatar:"EW" },
-    { id:4, text:"Their expertise in machine learning and AI automation has been invaluable to our organization.",                    author:"David Martinez", position:"Director, Innovation Labs",    rating:5, avatar:"DM" }
+    { id:4, text:"Their expertise in machine learning and AI automation has been invaluable to our organization.",                    author:"David Martinez", position:"Director, Innovation Labs",    rating:5, avatar:"DM" },
+    { id:5, text:"تحفةةة يا اخويا ما شاء الله عليك 🫡🤩🤩❤️❤️❤️❤️",                    author:"Omar Mobark", position:"Engineer, Innovation Labs",    rating:5, avatar:"OM" },
+    { id:6, text:"اللهم بارك  project وال presentation جمدان بالتوفيق دايما يارب 🤍",        author:"Mohamed Osama",    position:"Data Analyst",         rating:5, avatar:"MO" }
 ];
 
 const DEFAULT_BLOG_POSTS = [
