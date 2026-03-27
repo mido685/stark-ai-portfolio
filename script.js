@@ -35,6 +35,26 @@ const DEFAULT_PROJECTS = [
         demo:   "https://mido685.github.io/medical_assistance/",
         image:  "medical_assistance.png",
         stars:  5
+    },
+    {
+        "id": 3,
+        "title": "Smart Order — AI Inventory Optimization",
+        "description": "A production-ready AI-powered inventory management system that predicts optimal order quantities using a machine learning model trained on consumption patterns and cost data. Features a Next.js frontend with real-time form validation, a FastAPI backend deployed on HuggingFace Spaces, and a secure Next.js API proxy layer. Accepts item name, current balance, consumption rate, and COGS as inputs and returns intelligent reorder recommendations instantly.",
+        "technologies": [
+        "Python",
+        "FastAPI",
+        "Machine Learning",
+        "Next.js",
+        "TypeScript",
+        "HuggingFace Spaces",
+        "Tailwind CSS",
+        "REST API",
+        "Vercel"
+        ],
+        "github": "https://github.com/mido685/Stark",
+        "demo": "https://stark-git-main-starks-projects-09de8919.vercel.app/",
+        "image": "smart_order.png",
+        "stars": 5
     }
 ];
 
