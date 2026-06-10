@@ -1,13 +1,7 @@
 // ============================================
 // STARK AI - Portfolio JavaScript (FIXED)
 // ============================================
-// This single file replaces BOTH script.js AND dashboard-auth.js
-// Remove dashboard-auth.js from your HTML — only load this script.js
-// ============================================
 
-// ============================================
-// PASSWORD CONFIG — change this
-// ============================================
 const STARK_PASSWORD    = 'stark2026';
 const SESSION_KEY       = 'stark_dash_auth';
 const SESSION_MINUTES   = 120;
@@ -24,7 +18,10 @@ const DEFAULT_PROJECTS = [
         github: "https://github.com/mido685/stark_tokenizer",
         demo:   "https://mido685.github.io/stark_tokenizer/",
         image:  "tokenizer.png",
-        stars:  5
+        stars:  5,
+        problem:  "Medical NLP models require specialized tokenizers that understand clinical terminology, drug names, and domain-specific subwords — general-purpose tokenizers fail on medical text.",
+        solution: "Built a WordPiece tokenizer from scratch trained on 28 clinical domains, fully compatible with HuggingFace pipelines and served via FastAPI on HuggingFace Spaces.",
+        impact:   "Enables accurate tokenization of medical text with 40%+ better subword coverage vs general tokenizers — directly improving downstream NER, classification, and summarization tasks."
     },
     {
         id: 2,
@@ -34,27 +31,23 @@ const DEFAULT_PROJECTS = [
         github: "https://github.com/mido685/medical_assistance",
         demo:   "https://mido685.github.io/medical_assistance/",
         image:  "medical_assistance.png",
-        stars:  5
+        stars:  5,
+        problem:  "Patients frequently miss medication doses or take incorrect amounts due to complex prescription instructions written in clinical language they can't easily interpret.",
+        solution: "Fine-tuned BERT for medical NER to extract drug names, doses, and schedules from natural language, with automated Telegram reminders and a PostgreSQL-backed chat UI.",
+        impact:   "Reduces medication non-adherence with automated reminders, potentially improving patient outcomes and reducing hospital readmissions linked to missed doses."
     },
     {
-        "id": 3,
-        "title": "Smart Order — AI Inventory Optimization",
-        "description": "A production-ready AI-powered inventory management system that predicts optimal order quantities using a machine learning model trained on consumption patterns and cost data. Features a Next.js frontend with real-time form validation, a FastAPI backend deployed on HuggingFace Spaces, and a secure Next.js API proxy layer. Accepts item name, current balance, consumption rate, and COGS as inputs and returns intelligent reorder recommendations instantly.",
-        "technologies": [
-        "Python",
-        "FastAPI",
-        "Machine Learning",
-        "Next.js",
-        "TypeScript",
-        "HuggingFace Spaces",
-        "Tailwind CSS",
-        "REST API",
-        "Vercel"
-        ],
-        "github": "https://github.com/mido685/Stark",
-        "demo": "https://stark-git-main-starks-projects-09de8919.vercel.app/",
-        "image": "smart_order.png",
-        "stars": 5
+        id: 3,
+        title: "Smart Order — AI Inventory Optimization",
+        description: "A production-ready AI-powered inventory management system that predicts optimal order quantities using a machine learning model trained on consumption patterns and cost data. Features a Next.js frontend with real-time form validation, a FastAPI backend deployed on HuggingFace Spaces, and a secure Next.js API proxy layer. Accepts item name, current balance, consumption rate, and COGS as inputs and returns intelligent reorder recommendations instantly.",
+        technologies: ["Python","FastAPI","Machine Learning","Next.js","TypeScript","HuggingFace Spaces","Tailwind CSS","REST API","Vercel"],
+        github: "https://github.com/mido685/Stark",
+        demo:   "https://stark-git-main-starks-projects-09de8919.vercel.app/",
+        image:  "smart_order.png",
+        stars:  5,
+        problem:  "Businesses lose revenue from both overstocking (tied-up capital) and stockouts (lost sales) due to manual, gut-feel inventory decisions with no data-driven foundation.",
+        solution: "ML model trained on consumption patterns and cost data predicts optimal reorder quantities, served through a FastAPI backend with a real-time Next.js frontend.",
+        impact:   "Delivers instant reorder recommendations that reduce carrying costs and prevent stockouts — directly improving cash flow and operational efficiency for inventory teams."
     }
 ];
 
@@ -140,21 +133,297 @@ function showNotification(message, type = 'info') {
 }
 
 // ============================================
-// RENDER: PROJECTS  (FIX: no IntersectionObserver opacity:0 on cards)
+// IMPACT MODAL — inject once
+// ============================================
+function injectImpactModal() {
+    if (document.getElementById('impactModal')) return;
+
+    const css = document.createElement('style');
+    css.textContent = `
+        #impactModal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 8000;
+            background: rgba(5, 10, 28, 0.85);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            animation: impactFadeIn 0.25s ease;
+        }
+        #impactModal.active { display: flex; }
+        @keyframes impactFadeIn { from{opacity:0} to{opacity:1} }
+
+        .impact-modal-box {
+            background: #0d1526;
+            border: 1px solid rgba(0,212,255,0.25);
+            border-radius: 16px;
+            width: 100%;
+            max-width: 660px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 24px 80px rgba(0,0,0,0.7), 0 0 40px rgba(0,212,255,0.08);
+            animation: impactSlideUp 0.35s cubic-bezier(0.34,1.56,0.64,1);
+        }
+        @keyframes impactSlideUp {
+            from { transform: translateY(32px) scale(0.97); opacity:0; }
+            to   { transform: translateY(0)    scale(1);    opacity:1; }
+        }
+
+        /* preview image inside modal */
+        .impact-modal-img {
+            width: 100%;
+            aspect-ratio: 16/9;
+            object-fit: cover;
+            object-position: top;
+            border-radius: 16px 16px 0 0;
+            display: block;
+        }
+        .impact-modal-img-placeholder {
+            width: 100%;
+            aspect-ratio: 16/9;
+            border-radius: 16px 16px 0 0;
+            background: linear-gradient(135deg, #0d1a33 0%, #091020 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 56px;
+        }
+
+        .impact-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: 22px 26px 0;
+            gap: 12px;
+        }
+        .impact-modal-category {
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: #00d4ff;
+            margin-bottom: 6px;
+        }
+        .impact-modal-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #ffffff;
+            margin: 0;
+            line-height: 1.3;
+        }
+        .impact-modal-close {
+            background: rgba(255,255,255,0.07);
+            border: 1px solid rgba(255,255,255,0.14);
+            color: rgba(255,255,255,0.6);
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            font-size: 16px;
+            cursor: pointer;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            line-height: 1;
+        }
+        .impact-modal-close:hover { background: rgba(255,255,255,0.14); color:#fff; }
+
+        .impact-modal-desc {
+            font-size: 13px;
+            color: rgba(255,255,255,0.58);
+            line-height: 1.75;
+            padding: 14px 26px 0;
+            margin: 0;
+        }
+
+        /* the 3 case-study blocks */
+        .impact-case-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+            padding: 20px 26px 0;
+        }
+        @media(min-width:520px){
+            .impact-case-grid { grid-template-columns: repeat(3,1fr); }
+        }
+        .impact-case-block {
+            background: rgba(0,212,255,0.04);
+            border: 1px solid rgba(0,212,255,0.14);
+            border-radius: 10px;
+            padding: 16px;
+        }
+        .impact-case-block span {
+            display: block;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: #00d4ff;
+            margin-bottom: 8px;
+        }
+        .impact-case-block p {
+            font-size: 13px;
+            color: rgba(255,255,255,0.72);
+            margin: 0;
+            line-height: 1.65;
+        }
+
+        /* tags row */
+        .impact-modal-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            padding: 16px 26px 0;
+        }
+        .impact-tag {
+            font-size: 11px;
+            color: #00d4ff;
+            border: 1px solid rgba(0,212,255,0.38);
+            border-radius: 20px;
+            padding: 3px 12px;
+            background: rgba(0,212,255,0.05);
+            white-space: nowrap;
+        }
+
+        /* action buttons */
+        .impact-modal-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding: 20px 26px 26px;
+        }
+        .impact-btn {
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s;
+            cursor: pointer;
+            border: none;
+            font-family: inherit;
+        }
+        .impact-btn-primary {
+            background: #00d4ff;
+            color: #000;
+        }
+        .impact-btn-primary:hover { opacity: 0.85; transform: translateY(-2px); }
+        .impact-btn-outline {
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.22);
+            color: rgba(255,255,255,0.82);
+        }
+        .impact-btn-outline:hover { border-color:rgba(255,255,255,0.5); color:#fff; }
+        .impact-btn-ghost {
+            background: transparent;
+            border: 1px solid rgba(0,212,255,0.35);
+            color: #00d4ff;
+        }
+        .impact-btn-ghost:hover { background: rgba(0,212,255,0.08); }
+    `;
+    document.head.appendChild(css);
+
+    const modal = document.createElement('div');
+    modal.id = 'impactModal';
+    modal.innerHTML = `
+        <div class="impact-modal-box" id="impactModalBox">
+            <div id="impactModalInner"></div>
+        </div>`;
+    document.body.appendChild(modal);
+
+    // close on overlay click
+    modal.addEventListener('click', e => {
+        if (e.target === modal) closeImpactModal();
+    });
+
+    // close on Escape
+    document.addEventListener('keydown', e => {
+        if (e.key === 'Escape') closeImpactModal();
+    });
+}
+
+function openImpactModal(project) {
+    const modal = document.getElementById('impactModal');
+    const inner = document.getElementById('impactModalInner');
+    if (!modal || !inner) return;
+
+    const tags = (project.technologies || []).map(t => `<span class="impact-tag">${t}</span>`).join('');
+
+    const imageHTML = project.image
+        ? `<img class="impact-modal-img" src="${project.image}" alt="${project.title}" onerror="this.style.display='none'">`
+        : `<div class="impact-modal-img-placeholder">🤖</div>`;
+
+    const githubBtn = project.github
+        ? `<a href="${project.github}" target="_blank" class="impact-btn impact-btn-outline">GitHub</a>` : '';
+    const demoBtn = project.demo
+        ? `<a href="${project.demo}" target="_blank" class="impact-btn impact-btn-primary">Live Demo →</a>` : '';
+
+    inner.innerHTML = `
+        ${imageHTML}
+        <div class="impact-modal-header">
+            <div>
+                <div class="impact-modal-category">AI Solution</div>
+                <h3 class="impact-modal-title">${project.title}</h3>
+            </div>
+            <button class="impact-modal-close" onclick="closeImpactModal()">✕</button>
+        </div>
+        <p class="impact-modal-desc">${project.description}</p>
+        <div class="impact-case-grid">
+            <div class="impact-case-block">
+                <span>Problem</span>
+                <p>${project.problem || 'This project solves a real business workflow challenge.'}</p>
+            </div>
+            <div class="impact-case-block">
+                <span>Solution</span>
+                <p>${project.solution || 'A practical AI system built with clean architecture and production-ready APIs.'}</p>
+            </div>
+            <div class="impact-case-block">
+                <span>Business Impact</span>
+                <p>${project.impact || 'Improves speed, consistency, and decision quality for teams.'}</p>
+            </div>
+        </div>
+        <div class="impact-modal-tags">${tags}</div>
+        <div class="impact-modal-actions">
+            ${demoBtn}
+            ${githubBtn}
+            <a href="#contact" class="impact-btn impact-btn-ghost" onclick="closeImpactModal()">Discuss Similar Project</a>
+        </div>`;
+
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeImpactModal() {
+    const modal = document.getElementById('impactModal');
+    if (modal) modal.classList.remove('active');
+    document.body.style.overflow = '';
+}
+
+// ============================================
+// RENDER: PROJECTS
 // ============================================
 function renderProjects() {
     const container = document.getElementById('projectsContainer');
     if (!container) return;
     const projects = getProjects();
     container.innerHTML = '';
+
     projects.forEach(project => {
         const stars = project.stars || 0;
         const starsHTML = Array.from({length:5}, (_,i) =>
             `<span class="star ${i < stars ? 'filled' : ''}">★</span>`
         ).join('');
+
         const card = document.createElement('div');
         card.className = 'project-card';
-        // opacity stays at default (1) — do NOT set opacity:0 here
+
         card.innerHTML = `
             ${project.image
                 ? `<div class="project-image"><img src="${project.image}" alt="${project.title}" onerror="this.parentElement.style.display='none'"></div>`
@@ -166,11 +435,22 @@ function renderProjects() {
                 <p class="project-description">${project.description}</p>
                 <div class="project-tech">${project.technologies.map(t=>`<span class="tech-badge">${t}</span>`).join('')}</div>
                 <div class="project-links">
-                    ${project.github ? `<a href="${project.github}" target="_blank">GitHub</a>` : ''}
+                    <button class="btn-view-impact" data-id="${project.id}">📊 View Impact</button>
+                    ${project.github ? `<a href="${project.github}" target="_blank" class="btn-github">GitHub</a>` : ''}
                     ${project.demo   ? `<a href="${project.demo}"   target="_blank" class="btn-demo">Live Demo →</a>` : ''}
                 </div>
             </div>`;
+
         container.appendChild(card);
+    });
+
+    // bind "View Impact" buttons
+    container.querySelectorAll('.btn-view-impact').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const id = parseInt(btn.getAttribute('data-id'));
+            const project = getProjects().find(p => p.id === id);
+            if (project) openImpactModal(project);
+        });
     });
 }
 
@@ -402,7 +682,6 @@ function createParticles() {
             animation:floatParticle${i} ${(Math.random()*3+2).toFixed(1)}s ease-in-out infinite;
             animation-delay:${(Math.random()*2).toFixed(1)}s;
         `;
-        // inject unique keyframe so each particle has its own direction
         const ks = document.createElement('style');
         ks.textContent = `@keyframes floatParticle${i}{0%,100%{transform:translate(0,0);opacity:.3}50%{transform:translate(${tx}px,${ty}px);opacity:.8}}`;
         document.head.appendChild(ks);
@@ -411,12 +690,44 @@ function createParticles() {
 }
 
 // ============================================
-// GLOBAL KEYFRAMES (notifications)
+// GLOBAL KEYFRAMES
 // ============================================
 const _globalStyle = document.createElement('style');
 _globalStyle.textContent = `
     @keyframes slideInRight  { from{opacity:0;transform:translateX(100px)} to{opacity:1;transform:translateX(0)} }
     @keyframes slideOutRight { from{opacity:1;transform:translateX(0)}     to{opacity:0;transform:translateX(100px)} }
+
+    /* "View Impact" button style injected globally */
+    .btn-view-impact {
+        background: rgba(0,212,255,0.1);
+        border: 1px solid rgba(0,212,255,0.45);
+        color: #00d4ff;
+        padding: 8px 16px;
+        border-radius: 6px;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        font-family: inherit;
+        transition: background 0.2s, transform 0.2s;
+        white-space: nowrap;
+    }
+    .btn-view-impact:hover {
+        background: rgba(0,212,255,0.2);
+        transform: translateY(-2px);
+    }
+    .btn-github {
+        display: inline-flex;
+        align-items: center;
+        padding: 8px 16px;
+        border: 1px solid rgba(255,255,255,0.2);
+        border-radius: 6px;
+        color: rgba(255,255,255,0.8);
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 600;
+        transition: border-color 0.2s, color 0.2s;
+    }
+    .btn-github:hover { border-color: rgba(255,255,255,0.5); color:#fff; }
 `;
 document.head.appendChild(_globalStyle);
 
@@ -424,7 +735,6 @@ document.head.appendChild(_globalStyle);
 // AUTH GATE — inject styles + HTML
 // ============================================
 function injectAuthGate() {
-    // ── styles ──
     const css = document.createElement('style');
     css.textContent = `
     #starkAuthGate{display:none;position:fixed;inset:0;z-index:9999;background:rgba(10,14,39,0.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);align-items:center;justify-content:center;animation:authFadeIn 0.3s ease}
@@ -469,7 +779,6 @@ function injectAuthGate() {
     `;
     document.head.appendChild(css);
 
-    // ── HTML ──
     document.body.insertAdjacentHTML('beforeend', `
     <div id="starkAuthGate">
         <div class="auth-modal">
@@ -515,7 +824,6 @@ function openAuthGate(onSuccess) {
     const cancel  = document.getElementById('starkCancelBtn');
     const success = document.getElementById('starkAuthSuccess');
 
-    // reset
     input.value = '';
     input.type  = 'password';
     eye.textContent = '👁';
@@ -547,7 +855,6 @@ function openAuthGate(onSuccess) {
         }
     }
 
-    // bind fresh listeners every time gate opens (avoids duplicate handler stacking)
     btn.onclick     = attempt;
     cancel.onclick  = closeGate;
     input.onkeydown = e => { if (e.key === 'Enter') attempt(); };
@@ -574,9 +881,6 @@ function closeDashboardPanel() {
     if (overlay) overlay.classList.remove('active');
 }
 
-// ============================================
-// GOOGLE ANALYTICS
-// ============================================
 function trackPageView(pageName) {
     if (typeof gtag !== 'undefined') {
         gtag('event', 'page_view', { page_title: pageName, page_path: window.location.pathname });
@@ -587,29 +891,27 @@ function trackPageView(pageName) {
 // MAIN — DOMContentLoaded
 // ============================================
 document.addEventListener('DOMContentLoaded', () => {
-
-    // 1. Storage
+    initLoadingScreen(); // ← first line
     initializeStorage();
 
-    // 2. Render all sections
+
     renderProjects();
     renderProjectsList();
     renderTestimonials();
     renderBlogPosts();
 
-    // 3. Load dashboard inputs
     loadContactInfo();
     loadAboutText();
     updateContactLinks();
 
-    // 4. Particles
     createParticles();
+    startTypingAnimation()
+    initScrollToTop();
+    initActiveNav();
 
-    // 5. Inject auth gate HTML + styles
     injectAuthGate();
+    injectImpactModal();   // ← new
 
-    // ── DASHBOARD TOGGLE (auth-gated) ──────────────
-    // We bind directly here — no cloning, no timeout race condition
     const dashboardToggle = document.getElementById('dashboardToggle');
     if (dashboardToggle) {
         dashboardToggle.addEventListener('click', e => {
@@ -622,13 +924,11 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // ── CLOSE DASHBOARD ────────────────────────────
     const closeDashboardBtn = document.getElementById('closeDashboard');
     const dashboardOverlay  = document.getElementById('dashboardOverlay');
     if (closeDashboardBtn) closeDashboardBtn.addEventListener('click', closeDashboardPanel);
     if (dashboardOverlay)  dashboardOverlay.addEventListener('click', closeDashboardPanel);
 
-    // ── KEYBOARD SHORTCUT Ctrl+D ───────────────────
     document.addEventListener('keydown', e => {
         if ((e.ctrlKey || e.metaKey) && e.key === 'd') {
             e.preventDefault();
@@ -640,28 +940,22 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // ── TABS (FIX: bind on document, not just .tab-btn) ──
-    // Use event delegation so it works even when panel slides in late
     document.addEventListener('click', e => {
         const tabBtn = e.target.closest('.tab-btn');
         if (!tabBtn) return;
         const tabName = tabBtn.getAttribute('data-tab');
         if (!tabName) return;
-        // deactivate all
         document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
         document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-        // activate clicked
         tabBtn.classList.add('active');
         const target = document.getElementById(tabName);
         if (target) target.classList.add('active');
     });
 
-    // ── ADD PROJECT FORM (FIX: declare vars BEFORE using them) ──
     const addProjectForm = document.getElementById('addProjectForm');
     if (addProjectForm) {
         addProjectForm.addEventListener('submit', e => {
             e.preventDefault();
-            // declare first, use after
             const title       = document.getElementById('projectTitle').value.trim();
             const description = document.getElementById('projectDescription').value.trim();
             const tech        = document.getElementById('projectTech').value.trim();
@@ -677,7 +971,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const newProject = {
                 id: Date.now(), title, description,
                 technologies: tech ? tech.split(',').map(t => t.trim()) : [],
-                github, demo, image, stars
+                github, demo, image, stars,
+                problem:  '',
+                solution: '',
+                impact:   ''
             };
             const projects = getProjects();
             projects.push(newProject);
@@ -689,7 +986,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // ── MOBILE MENU ────────────────────────────────
     const hamburger = document.getElementById('hamburger');
     const navMenu   = document.querySelector('.nav-menu');
     if (hamburger) hamburger.addEventListener('click', () => navMenu.classList.toggle('active'));
@@ -697,11 +993,9 @@ document.addEventListener('DOMContentLoaded', () => {
         link.addEventListener('click', () => navMenu && navMenu.classList.remove('active'))
     );
 
-    // ── SMOOTH SCROLLING ───────────────────────────
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function(e) {
             const href = this.getAttribute('href');
-            // skip dashboard toggle and bare # links
             if (href === '#' || this.id === 'dashboardToggle') return;
             const target = document.querySelector(href);
             if (target) {
@@ -711,7 +1005,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // ── CONTACT FORM ───────────────────────────────
     const contactForm = document.getElementById('contactForm');
     if (contactForm && typeof emailjs !== 'undefined') {
         emailjs.init('iHEdPm2yXKwNn0C9o');
@@ -724,20 +1017,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 message:    formData.get('message')
             };
             showNotification('Sending...', 'success');
-            emailjs.send('service_usrd5yg', 'template_o6srwqo', params)
+            emailjs.send('service_usrd5yg', 'template_o6srwqo', params, 'iHEdPm2yXKwNn0C9o')
                 .then(() => { showNotification('Message sent successfully!', 'success'); contactForm.reset(); })
                 .catch(err => { showNotification('Failed to send. Please try again.', 'error'); console.error(err); });
         });
     }
 
-    // ── BLOG SEARCH ────────────────────────────────
     const blogSearch   = document.getElementById('blogSearch');
     const blogCategory = document.getElementById('blogCategory');
     if (blogSearch)   blogSearch.addEventListener('input',  () => renderBlogPosts(blogCategory ? blogCategory.value : '', blogSearch.value));
     if (blogCategory) blogCategory.addEventListener('change', () => renderBlogPosts(blogCategory.value, blogSearch ? blogSearch.value : ''));
 
-    // ── INTERSECTION OBSERVER (FIX: only feature/tech cards, NOT project-card) ──
-    // project-cards are already visible; only animate the static cards
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
@@ -757,9 +1047,256 @@ document.addEventListener('DOMContentLoaded', () => {
     trackPageView('Home');
     console.log('✅ STARK AI Portfolio loaded successfully!');
 });
+function startTypingAnimation() {
+    const el = document.querySelector('.hero-subtitle');
+    if (!el) return;
+ 
+    const phrases = [
+        'Building Intelligent AI Systems for the Future',
+        'Crafting NLP Solutions That Understand You',
+        'Automating Business Workflows with AI',
+        'Training Models That Solve Real Problems',
+        'Turning Data Into Intelligent Decisions',
+        'Building Medical AI for Better Healthcare',
+    ];
+ 
+    // inject cursor style once
+    const cursorStyle = document.createElement('style');
+    cursorStyle.textContent = `
+        .typing-cursor {
+            display: inline-block;
+            width: 2px;
+            height: 1em;
+            background: var(--accent-color, #00d4ff);
+            margin-left: 3px;
+            vertical-align: middle;
+            animation: cursorBlink 0.75s step-end infinite;
+        }
+        @keyframes cursorBlink {
+            0%, 100% { opacity: 1; }
+            50%       { opacity: 0; }
+        }
+    `;
+    document.head.appendChild(cursorStyle);
+ 
+    // build: <span id="typingText"></span><span class="typing-cursor"></span>
+    el.innerHTML = '<span id="typingText"></span><span class="typing-cursor"></span>';
+    const textEl = document.getElementById('typingText');
+ 
+    let phraseIndex = 0;
+    let charIndex   = 0;
+    let isDeleting  = false;
+ 
+    const TYPE_SPEED   = 55;   // ms per character while typing
+    const DELETE_SPEED = 28;   // ms per character while deleting
+    const PAUSE_AFTER  = 2200; // ms to wait at end of phrase
+    const PAUSE_BEFORE = 400;  // ms pause before starting to delete
+ 
+    function tick() {
+        const currentPhrase = phrases[phraseIndex];
+ 
+        if (!isDeleting) {
+            // typing forward
+            charIndex++;
+            textEl.textContent = currentPhrase.slice(0, charIndex);
+ 
+            if (charIndex === currentPhrase.length) {
+                // finished typing — pause, then start deleting
+                isDeleting = true;
+                setTimeout(tick, PAUSE_AFTER);
+                return;
+            }
+            setTimeout(tick, TYPE_SPEED);
+        } else {
+            // deleting
+            charIndex--;
+            textEl.textContent = currentPhrase.slice(0, charIndex);
+ 
+            if (charIndex === 0) {
+                // finished deleting — move to next phrase
+                isDeleting  = false;
+                phraseIndex = (phraseIndex + 1) % phrases.length;
+                setTimeout(tick, PAUSE_BEFORE);
+                return;
+            }
+            setTimeout(tick, DELETE_SPEED);
+        }
+    }
+ 
+    // small initial delay so page has settled
+    setTimeout(tick, 800);
+}
+// ============================================
+// SCROLL TO TOP BUTTON
+// ============================================
+// STEP 1: Paste this function into script.js (before exports)
+// STEP 2: Call initScrollToTop(); inside DOMContentLoaded
+
+function initScrollToTop() {
+    // inject style
+    const style = document.createElement('style');
+    style.textContent = `
+        #scrollTopBtn {
+            position: fixed;
+            bottom: 32px;
+            right: 28px;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: rgba(0, 212, 255, 0.12);
+            border: 1px solid rgba(0, 212, 255, 0.45);
+            color: #00d4ff;
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 7000;
+            opacity: 0;
+            transform: translateY(16px);
+            pointer-events: none;
+            transition: opacity 0.3s ease, transform 0.3s ease, background 0.2s;
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+        }
+        #scrollTopBtn.visible {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+        #scrollTopBtn:hover {
+            background: rgba(0, 212, 255, 0.25);
+        }
+    `;
+    document.head.appendChild(style);
+
+    // create button
+    const btn = document.createElement('button');
+    btn.id = 'scrollTopBtn';
+    btn.setAttribute('aria-label', 'Scroll to top');
+    btn.innerHTML = '↑';
+    document.body.appendChild(btn);
+
+    // show/hide on scroll
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 400) {
+            btn.classList.add('visible');
+        } else {
+            btn.classList.remove('visible');
+        }
+    }, { passive: true });
+
+    // scroll to top on click
+    btn.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+}
+
 
 // ============================================
-// GLOBAL EXPORTS (used by inline onclick= in HTML)
+// ACTIVE NAV LINK ON SCROLL
+// ============================================
+// STEP 1: Paste this function into script.js (before exports)
+// STEP 2: Call initActiveNav(); inside DOMContentLoaded
+
+function initActiveNav() {
+    // inject style — only the active state, your existing nav-link styles stay
+    const style = document.createElement('style');
+    style.textContent = `
+        .nav-link.nav-active {
+            color: var(--accent-color, #00d4ff) !important;
+            position: relative;
+        }
+        .nav-link.nav-active::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--accent-color, #00d4ff);
+            border-radius: 2px;
+            animation: navUnderlineIn 0.2s ease forwards;
+        }
+        @keyframes navUnderlineIn {
+            from { transform: scaleX(0); }
+            to   { transform: scaleX(1); }
+        }
+    `;
+    document.head.appendChild(style);
+
+    // all sections that have a matching nav link
+    const sectionIds = ['hero', 'about', 'projects', 'technologies', 'architecture', 'testimonials', 'blog', 'contact'];
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (!entry.isIntersecting) return;
+
+            const id = entry.target.id;
+
+            // remove active from all nav links
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('nav-active');
+            });
+
+            // add active to the matching one
+            const activeLink = document.querySelector(`.nav-link[href="#${id}"]`);
+            if (activeLink) activeLink.classList.add('nav-active');
+        });
+    }, {
+        rootMargin: '-40% 0px -55% 0px',  // triggers when section is in the middle of viewport
+        threshold: 0
+    });
+
+    sectionIds.forEach(id => {
+        const section = document.getElementById(id);
+        if (section) observer.observe(section);
+    });
+}
+
+
+// ============================================
+// HOW TO CALL — inside your DOMContentLoaded block
+// ============================================
+// Find this line:
+//     startTypingAnimation();
+//
+// Add right after it:
+//     initScrollToTop();
+//     initActiveNav();
+//
+// That's it. No HTML changes needed.
+// ============================================
+function initLoadingScreen() {
+    const loader = document.getElementById('starkLoader');
+    const bar    = document.getElementById('loaderBar');
+    if (!loader || !bar) return;
+
+    let progress = 0;
+
+    const interval = setInterval(() => {
+        progress += Math.random() * 18;
+        if (progress >= 90) { progress = 90; clearInterval(interval); }
+        bar.style.width = progress + '%';
+    }, 120);
+
+    function finish() {
+        clearInterval(interval);
+        bar.style.width = '100%';
+        setTimeout(() => {
+            loader.classList.add('hidden');
+            setTimeout(() => loader.remove(), 600);
+        }, 300);
+    }
+
+    if (document.readyState === 'complete') {
+        finish();
+    } else {
+        window.addEventListener('load', finish, { once: true });
+        setTimeout(finish, 3000); // safety fallback — never blocks longer than 3s
+    }
+}
+// GLOBAL EXPORTS
 // ============================================
 window.saveAboutSection     = saveAboutSection;
 window.saveContactInfo      = saveContactInfoFunc;
@@ -775,3 +1312,4 @@ window.trackPageView        = trackPageView;
 window.getNewsletterSubscribers = getNewsletterSubscribers;
 window.getBlogPosts         = getBlogPosts;
 window.getTestimonials      = getTestimonials;
+window.closeImpactModal     = closeImpactModal;
